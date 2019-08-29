@@ -1,8 +1,7 @@
 <script>
 	import Navigation from './Navigation.svelte';
-	// import marked from 'marked';
-
 	import hljs from 'highlight.js';
+	
 	hljs.initHighlightingOnLoad();
 
 	let originalCode = '';
@@ -13,6 +12,7 @@
 
 		console.log('highlighted', highlightedCode);
 	}
+	//Copy the code 
 	function copyToClipboard() {
 		var range = document.createRange();
 		range.selectNode(document.getElementById('original-code'));
@@ -21,7 +21,8 @@
 		document.execCommand('copy');
 		window.getSelection().removeAllRanges(); // to deselect
 	}
-	function downloadCode(data,fileName = "originalCode") {
+	//Download the code3
+	function downloadCode(data, fileName = 'originalCode') {
 		console.log('original code', originalCode);
 		var element = document.createElement('a');
 		element.setAttribute(
@@ -29,12 +30,9 @@
 			'data:text/plain;charset=utf-8,' + encodeURIComponent(data)
 		);
 		element.setAttribute('download', fileName);
-
 		element.style.display = 'none';
 		document.body.appendChild(element);
-
 		element.click();
-
 		document.body.removeChild(element);
 	}
 </script>
@@ -47,7 +45,11 @@
 <div class="container">
 	<!--[Title]-->
 	<div class="m-3 text-center">
-		<h1>Sharable highlited code</h1>
+		<h1>
+			Shareable
+			<span class="badge badge-primary">Highlighted</span>
+			Code
+		</h1>
 	</div>
 	<div class="row">
 		<!--[Left-Side]-->
@@ -94,12 +96,12 @@
 		</div>
 		<!--[Right-Side]-->
 		<div class="col-sm-6">
+			<!--[Highlighted-Code]-->
 			{#if highlightedCode.value}
 				<pre>
 					<code class="hljs">
 						{@html highlightedCode.value}
 					</code>
-					<!-- <div class="_javascript"> {codeData}</div> -->
 				</pre>
 			{/if}
 		</div>
