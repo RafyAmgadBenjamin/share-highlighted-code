@@ -1,8 +1,18 @@
 <script>
 	import Navigation from './Navigation.svelte';
+	// import marked from 'marked';
+
 	import hljs from 'highlight.js';
 	hljs.initHighlightingOnLoad();
 
+	let originalCode = '';
+	let highlightedCode = { value: '' };
+	function highlightCode(originalCode) {
+		console.log('oringinal code', originalCode);
+		highlightedCode = hljs.highlightAuto(originalCode);
+
+		console.log('highlighted', highlightedCode);
+	}
 </script>
 
 <div>
@@ -12,7 +22,7 @@
 <!--[Container]-->
 <div class="container">
 	<!--[Title]-->
-	<div class="mt-3">
+	<div class="m-3 text-center">
 		<h1>Sharable highlited code</h1>
 	</div>
 	<div class="row">
@@ -21,17 +31,19 @@
 			<!--[Content]-->
 			<div class="row">
 				<div class="col-sm-12">
-					<textarea rows="20" cols="50">
-						At w3schools.com you will learn how to make a website. We offer free
-						tutorials in all web development technologies.
-					</textarea>
+					<textarea rows="20" cols="50" bind:value={originalCode} />
 				</div>
 			</div>
 			<!--[BTNs]-->
 			<div class="row">
 				<!--[Submit-BTN]-->
 				<div class="col-sm-4">
-					<button type="button" class="btn btn-dark">Submit</button>
+					<button
+						type="button"
+						on:click={() => highlightCode(originalCode)}
+						class="btn btn-dark">
+						Submit
+					</button>
 				</div>
 				<!--[Download-BTN]-->
 				<div class="col-sm-4">
@@ -45,20 +57,14 @@
 		</div>
 		<!--[Right-Side]-->
 		<div class="col-sm-6">
-
-			<pre>
-				<code class="javascript">var test;alert(1+1);</code>
-			</pre>
-			<pre>
-				<code class="python">
-					def add_Url(originalUrl): 
-					generatedVal = str(generate_random_no())
-					add_url_redis(tinyUrl=generatedVal, originalUrl=originalUrl)
-					response.headers['Content-Type'] = 'application/json'
-					response.headers['Cache-Control'] = 'no-cache' return
-				</code>
-			</pre>
-
+			{#if highlightedCode.value}
+				<pre>
+					<code class="hljs">
+						{@html highlightedCode.value}
+					</code>
+					<!-- <div class="_javascript"> {codeData}</div> -->
+				</pre>
+			{/if}
 		</div>
 	</div>
 
