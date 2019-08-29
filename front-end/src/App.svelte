@@ -1,5 +1,8 @@
 <script>
 	import Navigation from './Navigation.svelte';
+	import hljs from 'highlight.js';
+	hljs.initHighlightingOnLoad();
+
 </script>
 
 <div>
@@ -42,7 +45,20 @@
 		</div>
 		<!--[Right-Side]-->
 		<div class="col-sm-6">
-			<p />
+
+			<pre>
+				<code class="javascript">var test;alert(1+1);</code>
+			</pre>
+			<pre>
+				<code class="python">
+					def add_Url(originalUrl): 
+					generatedVal = str(generate_random_no())
+					add_url_redis(tinyUrl=generatedVal, originalUrl=originalUrl)
+					response.headers['Content-Type'] = 'application/json'
+					response.headers['Cache-Control'] = 'no-cache' return
+				</code>
+			</pre>
+
 		</div>
 	</div>
 
