@@ -13,6 +13,30 @@
 
 		console.log('highlighted', highlightedCode);
 	}
+	function copyToClipboard() {
+		var range = document.createRange();
+		range.selectNode(document.getElementById('original-code'));
+		window.getSelection().removeAllRanges(); // clear current selection
+		window.getSelection().addRange(range); // to select text
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges(); // to deselect
+	}
+	function downloadCode(data,fileName = "originalCode") {
+		console.log('original code', originalCode);
+		var element = document.createElement('a');
+		element.setAttribute(
+			'href',
+			'data:text/plain;charset=utf-8,' + encodeURIComponent(data)
+		);
+		element.setAttribute('download', fileName);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+	}
 </script>
 
 <div>
@@ -31,27 +55,40 @@
 			<!--[Content]-->
 			<div class="row">
 				<div class="col-sm-12">
-					<textarea rows="20" cols="50" bind:value={originalCode} />
+					<textarea
+						id="original-code"
+						rows="20"
+						cols="56"
+						bind:value={originalCode} />
 				</div>
 			</div>
 			<!--[BTNs]-->
-			<div class="row">
+			<div class="_row d-flex justify-content-between mt-4">
 				<!--[Submit-BTN]-->
-				<div class="col-sm-4">
+				<div class="_col-sm-4">
 					<button
 						type="button"
 						on:click={() => highlightCode(originalCode)}
-						class="btn btn-dark">
+						class="btn btn-dark btn-lg">
 						Submit
 					</button>
 				</div>
 				<!--[Download-BTN]-->
-				<div class="col-sm-4">
-					<button type="button" class="btn btn-dark">Download</button>
+				<div class="_col-sm-4">
+					<button
+						type="button"
+						class="btn btn-dark btn-lg"
+						on:click={() => downloadCode(originalCode)}>
+						Download
+					</button>
 				</div>
 				<!--[Submit-Copy]-->
-				<div class="col-sm-4">
-					<button type="button" class="btn btn-dark">Copy</button>
+				<div class="_col-sm-4">
+					<button
+						class="btn btn-dark btn-lg"
+						on:click={() => copyToClipboard()}>
+						<i class="far fa-copy" />
+					</button>
 				</div>
 			</div>
 		</div>
