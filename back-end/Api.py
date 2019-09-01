@@ -6,6 +6,7 @@ import json
 from bottle import hook, request, response
 from bottle import post, get, put, delete
 
+
 #  configuration information
 redis_host = "localhost"
 redis_port = 6379
@@ -24,22 +25,42 @@ def enable_cors():
     response.headers['Access-Control-Allow-Origin'] = _allow_origin
     response.headers['Access-Control-Allow-Methods'] = _allow_methods
     response.headers['Access-Control-Allow-Headers'] = _allow_headers
+    response.headers['content-type'] = 'application/json'
+    # response.headers['Access-Control-Allow-Credentials'] = 'true'
+       
+
 
 
 @route('/', method='OPTIONS')
 @route('/<path:path>', method='OPTIONS')
-@post('/api/code/add-highlited-code')
+# the decorator
+# app = bottle.app()
+# def enable_cors(fn):
+#     def _enable_cors(*args, **kwargs):
+#         # set CORS headers
+#         response.headers['Access-Control-Allow-Origin'] = '*'
+#         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+#         response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+#         if bottle.request.method != 'OPTIONS':
+#             # actual request; reply with the actual response
+#             return fn(*args, **kwargs)
+#     return _enable_cors
+@post('/api/code/add-highlighted-code')
 def add_Highlighted_code():
     """
     Add the highlighted code to the Redis database
     """
+    #response.headers['Content-type'] = 'application/json'
+    print(request.body.readlines())
     generatedVal = str(generate_random_no())
-    #add to redis data base
-    print(response.body())
-   # add_url_redis(tinyUrl=generatedVal, originalUrl=originalUrl)
+    return generatedVal
+    # add to redis data base
+    # print(generatedVal)
+    # return generatedVal
+    # add_url_redis(tinyUrl=generatedVal, originalUrl=originalUrl)
     #response.headers['Content-Type'] = 'application/json'
     #response.headers['Cache-Control'] = 'no-cache'
-    #return json.dumps({'tinyUrl': generatedVal})
+    # return json.dumps({'tinyUrl': generatedVal})
 
 # # API: used to get the original URL from the tiny URL and redirect to the original URL
 # @route('/<tinyUrl>')
@@ -75,7 +96,7 @@ def add_highlighted_code(radndomNo, highlightedCode):
 
         # step 4: Set the data in Redis
         r.set(radndomNo, highlightedCode)
-        print(r.get(tinyUrl))
+        print(r.get(radndomNo))
 
         # step 5: Retrieve the data message from Redis
     except Exception as e:
