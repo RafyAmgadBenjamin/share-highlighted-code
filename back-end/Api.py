@@ -5,34 +5,52 @@ import redis
 import json
 from bottle import hook, request, response
 from bottle import post, get, put, delete
-
+import bottle
 
 #  configuration information
 redis_host = "localhost"
 redis_port = 6379
 redis_password = ""
 
-####
-_allow_origin = '*'
-_allow_methods = 'PUT, GET, POST, DELETE, OPTIONS'
-_allow_headers = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
+# ####
+# _allow_origin = '*'
+# _allow_methods = 'PUT, GET, POST, DELETE, OPTIONS'
+# _allow_headers = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
 
 
-@hook('after_request')
-def enable_cors():
-    '''Add headers to enable CORS'''
+# @hook('after_request')
+# def enable_cors():
+#     '''Add headers to enable CORS'''
 
-    response.headers['Access-Control-Allow-Origin'] = _allow_origin
-    response.headers['Access-Control-Allow-Methods'] = _allow_methods
-    response.headers['Access-Control-Allow-Headers'] = _allow_headers
-    response.headers['content-type'] = 'application/json'
-    # response.headers['Access-Control-Allow-Credentials'] = 'true'
-       
-
+#     response.headers['Access-Control-Allow-Origin'] = _allow_origin
+#     response.headers['Access-Control-Allow-Methods'] = _allow_methods
+#     response.headers['Access-Control-Allow-Headers'] = _allow_headers
+#     response.headers['content-type'] = 'application/json'
+#     response.headers['Access-Control-Allow-Credentials'] = 'true'
 
 
-@route('/', method='OPTIONS')
-@route('/<path:path>', method='OPTIONS')
+# @route('/', method='OPTIONS')
+# @route('/<path:path>', method='OPTIONS')
+# #######################
+
+# the decorator
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+
+        if bottle.request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
+
+
+app = bottle.app()
+
 # the decorator
 # app = bottle.app()
 # def enable_cors(fn):
@@ -45,13 +63,19 @@ def enable_cors():
 #             # actual request; reply with the actual response
 #             return fn(*args, **kwargs)
 #     return _enable_cors
-@post('/api/code/add-highlighted-code')
+# @post('/api/code/add-highlighted-code')
+@app.route('/api/code/add-highlighted-code', method=['OPTIONS', 'GET', 'POST'])
+@enable_cors
 def add_Highlighted_code():
     """
     Add the highlighted code to the Redis database
     """
-    #response.headers['Content-type'] = 'application/json'
+    if request.method == "POST":
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Content-type'] = 'application/json'
+    # import ipdb; ipdb.set_trace()
     print(request.body.readlines())
+    # print(request.body.readlines())
     generatedVal = str(generate_random_no())
     return generatedVal
     # add to redis data base

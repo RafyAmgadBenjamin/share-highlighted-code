@@ -14,9 +14,17 @@
 
 		//	makeCorsRequest(postHighightedCodeApiUrl,);
 		console.log('highlighted', { code: highlightedCode.value });
-		postData(postHighightedCodeApiUrl, { answer: 42 })
-			.then(data => console.log(data.json())) // JSON-string from `response.json()` call
-			.catch(error => console.error(error));
+		// postData(postHighightedCodeApiUrl, { answer: 42 })
+		// 	.then(data => console.log(data.json())) // JSON-string from `response.json()` call
+		// 	.catch(error => console.error(error));
+		// var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+		// //var theUrl = '/json-handler';
+		// xmlhttp.open('POST', postHighightedCodeApiUrl);
+		// xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		// xmlhttp.send(
+		// 	JSON.stringify({ email: 'hello@user.com', response: { name: 'Tester' } })
+		// );
+		makeCorsRequest(postHighightedCodeApiUrl,highlightedCode.value);
 	}
 
 	//Copy the code
@@ -42,24 +50,68 @@
 		element.click();
 		document.body.removeChild(element);
 	}
-
-	function postData(url = '', data = {}) {
-		// Default options are marked with *
-		return fetch(url, {
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
-			mode: 'cors', // no-cors, cors, *same-origin
-			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-			// credentials: 'same-origin', // include, *same-origin, omit
-			headers: {
-				'Content-Type': 'application/json',
-				// 'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			redirect: 'follow', // manual, *follow, error
-			referrer: 'no-referrer', // no-referrer, *client
-			body: JSON.stringify(data), // body data type must match "Content-Type" header
-			// }).then(response => response.json()); // parses JSON response into native JavaScript objects
-		});
+	function createCORSRequest(method, url) {
+		var xhr = new XMLHttpRequest();
+		if ('withCredentials' in xhr) {
+			// XHR for Chrome/Firefox/Opera/Safari.
+			xhr.open(method, url, true);
+		} else if (typeof XDomainRequest != 'undefined') {
+			// XDomainRequest for IE.
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+		} else {
+			// CORS not supported.
+			xhr = null;
+		}
+		return xhr;
 	}
+
+	// Helper method to parse the title tag from the response.
+	function getTitle(text) {
+		return text.match('<title>(.*)?</title>')[1];
+	}
+
+	// Make the actual CORS request.
+	function makeCorsRequest(url,data) {
+		// This is a sample server that supports CORS.
+		// var url = 'http://localhost:8080/api/code/add-highlighted-code';
+
+		var xhr = createCORSRequest('POST', url);
+		if (!xhr) {
+			alert('CORS not supported');
+			return;
+		}
+
+		// Response handlers.
+		xhr.onload = function() {
+			var text = xhr.responseText;
+			// var title = getTitle(text);
+			alert('Response from CORS request to ' + url + ': ');
+		};
+
+		xhr.onerror = function() {
+			alert('Woops, there was an error making the request.');
+		};
+
+		xhr.send(JSON.stringify({code:data}));
+	}
+	// function postData(url = '', data = {}) {
+	// 	// Default options are marked with *
+	// 	return fetch(url, {
+	// 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+	// 		mode: 'cors', // no-cors, cors, *same-origin
+	// 		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+	// 		// credentials: 'same-origin', // include, *same-origin, omit
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			// 'Content-Type': 'application/x-www-form-urlencoded',
+	// 		},
+	// 		redirect: 'follow', // manual, *follow, error
+	// 		referrer: 'no-referrer', // no-referrer, *client
+	// 		body: JSON.stringify(data), // body data type must match "Content-Type" header
+	// 		// }).then(response => response.json()); // parses JSON response into native JavaScript objects
+	// 	});
+	// }
 	// function createCORSRequest(method, url,data) {
 	// 	var xhr = new XMLHttpRequest();
 	// 	if ('withCredentials' in xhr) {
