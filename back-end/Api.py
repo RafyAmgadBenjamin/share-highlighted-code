@@ -41,29 +41,14 @@ def add_Highlighted_code():
     if request.method == "POST":
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Content-type'] = 'application/json'
-    # import ipdb; ipdb.set_trace()
-
-    print("Data:")
-    # data =  json.loads(request.json)
-    print(request.json)
+        
     data = request.json['code']
-    print(data)
     encodedData = stringToBase64(data)
-    print(encodedData)
-
-    # print(data["code"])
     generatedVal = str(generate_random_no())
     # add to redis data base
     add_highlighted_code(radndomNo=generatedVal,
                          data=encodedData)
     return generatedVal
-
-    # return generatedVal
-    # print(generatedVal)
-    # return generatedVal
-    #response.headers['Content-Type'] = 'application/json'
-    #response.headers['Cache-Control'] = 'no-cache'
-    # return json.dumps({'tinyUrl': generatedVal})
 
 
 @app.route('/api/code/get-shared-code/<codeId>', method=['OPTIONS', 'GET', 'POST'])
