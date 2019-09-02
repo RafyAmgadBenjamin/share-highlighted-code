@@ -55,15 +55,15 @@
 			<div class="col-sm-12">
 				<textarea
 					id="original-code"
-					rows="20"
-					cols="56"
+					rows="25"
+					cols="95"
 					bind:value={originalCode} />
 			</div>
 		</div>
 		<!--[BTNs]-->
-		<div class="_row d-flex justify-content-between mt-4">
+		<div class="d-flex justify-content-between mt-4">
 			<!--[Submit-BTN]-->
-			<div class="_col-sm-4">
+			<div>
 				<button
 					type="button"
 					on:click={() => highlightCode(originalCode)}
@@ -72,7 +72,7 @@
 				</button>
 			</div>
 			<!--[Download-BTN]-->
-			<div class="_col-sm-4">
+			<div>
 				<button
 					type="button"
 					class="btn btn-dark btn-lg"
@@ -81,7 +81,7 @@
 				</button>
 			</div>
 			<!--[Submit-Copy]-->
-			<div class="_col-sm-4">
+			<div >
 				<button
 					class="btn btn-dark btn-lg"
 					on:click={() => copyToClipboard('original-code')}>
@@ -95,7 +95,7 @@
 				<div class="col-sm-12">
 					<div class="d-flex mt-5 align-items-center">
 						<!--[Display-URL]-->
-						<div id="shareable-url">{shareableUrl}</div>
+						<div class="h3" id="shareable-url">{shareableUrl}</div>
 						<div>
 							<!--[Copy-BTN]-->
 							<button

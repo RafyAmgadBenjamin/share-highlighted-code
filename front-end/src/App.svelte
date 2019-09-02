@@ -9,7 +9,7 @@
 </div>
 
 <!--[Container]-->
-<div class="container">
+<div class="container-fluid">
 	<!--[Title]-->
 	<div class="m-3 text-center">
 		<h1>
