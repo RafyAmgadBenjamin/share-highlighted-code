@@ -1,6 +1,7 @@
 <script>
 	import hljs from 'highlight.js';
-	import axios from 'axios';
+    import axios from 'axios';
+    import HighlightedCode from './HighlightedCode.svelte'
 	var postHighightedCodeApiUrl =
 		'http://localhost:8080/api/code/add-highlighted-code';
 
@@ -117,14 +118,5 @@
 
 	</div>
 	<!--[Right-Side]-->
-	<div class="col-sm-6">
-		<!--[Highlighted-Code]-->
-		{#if highlightedCode.value}
-			<pre>
-				<code class="hljs">
-					{@html highlightedCode.value}
-				</code>
-			</pre>
-		{/if}
-	</div>
+	<HighlightedCode {highlightedCode}/>
 </div>
