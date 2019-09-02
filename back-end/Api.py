@@ -6,6 +6,7 @@ import json
 from bottle import hook, request, response
 from bottle import post, get, put, delete
 import bottle
+import base64
 
 #  configuration information
 redis_host = "localhost"
@@ -74,19 +75,25 @@ def add_Highlighted_code():
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Content-type'] = 'application/json'
     # import ipdb; ipdb.set_trace()
-    print(request.body.readlines())
-    print("Bytes")
-    print(request.body)
-    print(type(request.body.readlines()))
+
+    print("Data:")
+    # data =  json.loads(request.json)
+    print(request.json)
+    data = request.json['code']
+    print(data)
+    encodedData = stringToBase64(data)
+    print(encodedData)
+
+    # print(data["code"])
     generatedVal = str(generate_random_no())
     # add to redis data base
-    # add_highlighted_code(radndomNo=generatedVal,
-                         highlightedCode = request.body.readlines())
-    return generatedVal
+    add_highlighted_code(radndomNo=generatedVal,
+                         data=encodedData)
+    # return generatedVal
     # print(generatedVal)
     # return generatedVal
-    # response.headers['Content-Type'] = 'application/json'
-    # response.headers['Cache-Control'] = 'no-cache'
+    #response.headers['Content-Type'] = 'application/json'
+    #response.headers['Cache-Control'] = 'no-cache'
     # return json.dumps({'tinyUrl': generatedVal})
 
 # # API: used to get the original URL from the tiny URL and redirect to the original URL
@@ -107,22 +114,30 @@ def add_Highlighted_code():
 #     return template('views/404.tpl', e=response.status_code)
 
 
+def stringToBase64(s):
+    return base64.b64encode(s.encode('utf-8'))
+
+
+def base64ToString(b):
+    return base64.b64decode(b).decode('utf-8')
+
+
 def generate_random_no():
 
-    random.seed(a = None)
+    random.seed(a=None)
     return randint(0, 1000000)  # randint is inclusive at both ends
 
 
-def add_highlighted_code(radndomNo, highlightedCode):
+def add_highlighted_code(radndomNo, data):
     try:
 
         # The decode_repsonses flag here directs the client to convert the responses from Redis into Python strings
         # using the default encoding utf-8.  This is client specific.
-        r=redis.StrictRedis(host = redis_host, port = redis_port,
-                              password = redis_password, decode_responses = True)
+        r = redis.StrictRedis(host=redis_host, port=redis_port,
+                              password=redis_password, decode_responses=True)
 
         # step 4: Set the data in Redis
-        r.set(radndomNo, highlightedCode)
+        r.set(radndomNo, data)
         print("form redis" + r.get(radndomNo))
 
         # step 5: Retrieve the data message from Redis
@@ -130,4 +145,4 @@ def add_highlighted_code(radndomNo, highlightedCode):
         print(e)
 
 
-run(host = 'localhost', port = 8080, debug = True)
+run(host='localhost', port=8080, debug=True)

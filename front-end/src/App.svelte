@@ -1,6 +1,7 @@
 <script>
 	import Navigation from './Navigation.svelte';
 	import hljs from 'highlight.js';
+	import axios from 'axios';
 	var postHighightedCodeApiUrl =
 		'http://localhost:8080/api/code/add-highlighted-code';
 
@@ -14,17 +15,16 @@
 
 		//	makeCorsRequest(postHighightedCodeApiUrl,);
 		console.log('highlighted', { code: highlightedCode.value });
-		// postData(postHighightedCodeApiUrl, { answer: 42 })
-		// 	.then(data => console.log(data.json())) // JSON-string from `response.json()` call
-		// 	.catch(error => console.error(error));
-		// var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
-		// //var theUrl = '/json-handler';
-		// xmlhttp.open('POST', postHighightedCodeApiUrl);
-		// xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-		// xmlhttp.send(
-		// 	JSON.stringify({ email: 'hello@user.com', response: { name: 'Tester' } })
-		// );
-		makeCorsRequest(postHighightedCodeApiUrl, highlightedCode.value);
+		axios
+			.post(postHighightedCodeApiUrl, {
+				code: originalCode,
+			})
+			.then(function(response) {
+				console.log(response);
+			})
+			.catch(function(error) {
+				console.log(error);
+			});
 	}
 
 	//Copy the code
@@ -95,7 +95,7 @@
 		};
 
 		//xhr.send(JSON.stringify({ code: data }));
-		xhr.send( data );
+		xhr.send(data);
 	}
 	// function postData(url = '', data = {}) {
 	// 	// Default options are marked with *
