@@ -89,6 +89,8 @@ def add_Highlighted_code():
     # add to redis data base
     add_highlighted_code(radndomNo=generatedVal,
                          data=encodedData)
+    return generatedVal
+    
     # return generatedVal
     # print(generatedVal)
     # return generatedVal

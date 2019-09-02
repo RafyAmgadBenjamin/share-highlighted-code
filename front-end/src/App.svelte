@@ -6,6 +6,7 @@
 		'http://localhost:8080/api/code/add-highlighted-code';
 
 	hljs.initHighlightingOnLoad();
+	let shareableUrl = '';
 
 	let originalCode = '';
 	let highlightedCode = { value: '' };
@@ -20,6 +21,7 @@
 				code: originalCode,
 			})
 			.then(function(response) {
+				shareableUrl = 'http://localhost:5000/share-code/' + response.data;
 				console.log(response);
 			})
 			.catch(function(error) {
@@ -28,9 +30,9 @@
 	}
 
 	//Copy the code
-	function copyToClipboard() {
+	function copyToClipboard(elementId) {
 		var range = document.createRange();
-		range.selectNode(document.getElementById('original-code'));
+		range.selectNode(document.getElementById(elementId));
 		window.getSelection().removeAllRanges(); // clear current selection
 		window.getSelection().addRange(range); // to select text
 		document.execCommand('copy');
@@ -50,124 +52,6 @@
 		element.click();
 		document.body.removeChild(element);
 	}
-	function createCORSRequest(method, url) {
-		var xhr = new XMLHttpRequest();
-		if ('withCredentials' in xhr) {
-			// XHR for Chrome/Firefox/Opera/Safari.
-			xhr.open(method, url, true);
-		} else if (typeof XDomainRequest != 'undefined') {
-			// XDomainRequest for IE.
-			xhr = new XDomainRequest();
-			xhr.open(method, url);
-		} else {
-			// CORS not supported.
-			xhr = null;
-		}
-		return xhr;
-	}
-
-	// Helper method to parse the title tag from the response.
-	function getTitle(text) {
-		return text.match('<title>(.*)?</title>')[1];
-	}
-
-	// Make the actual CORS request.
-	function makeCorsRequest(url, data) {
-		// This is a sample server that supports CORS.
-		// var url = 'http://localhost:8080/api/code/add-highlighted-code';
-
-		var xhr = createCORSRequest('POST', url);
-		if (!xhr) {
-			alert('CORS not supported');
-			return;
-		}
-
-		// Response handlers.
-		xhr.onload = function() {
-			var text = xhr.responseText;
-			// var title = getTitle(text);
-			console.log(text);
-			//alert('Response from CORS request to ' + url + ': ');
-		};
-
-		xhr.onerror = function() {
-			alert('Woops, there was an error making the request.');
-		};
-
-		//xhr.send(JSON.stringify({ code: data }));
-		xhr.send(data);
-	}
-	// function postData(url = '', data = {}) {
-	// 	// Default options are marked with *
-	// 	return fetch(url, {
-	// 		method: 'POST', // *GET, POST, PUT, DELETE, etc.
-	// 		mode: 'cors', // no-cors, cors, *same-origin
-	// 		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-	// 		// credentials: 'same-origin', // include, *same-origin, omit
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 			// 'Content-Type': 'application/x-www-form-urlencoded',
-	// 		},
-	// 		redirect: 'follow', // manual, *follow, error
-	// 		referrer: 'no-referrer', // no-referrer, *client
-	// 		body: JSON.stringify(data), // body data type must match "Content-Type" header
-	// 		// }).then(response => response.json()); // parses JSON response into native JavaScript objects
-	// 	});
-	// }
-	// function createCORSRequest(method, url,data) {
-	// 	var xhr = new XMLHttpRequest();
-	// 	if ('withCredentials' in xhr) {
-	// 		// XHR for Chrome/Firefox/Opera/Safari.
-	// 		xhr.open(method, url, true);//true to make it asynchronous
-	// 	} else if (typeof XDomainRequest != 'undefined') {
-	// 		// XDomainRequest for IE.
-	// 		xhr = new XDomainRequest();
-	// 		xhr.open(method, url);
-	// 		//
-	// 		xhr.setRequestHeader('Content-Type', 'application/json');
-	// 		xhr.send(
-	// 			JSON.stringify({hamada:'hamada'})
-	// 		);
-
-	// 		//
-	// 	} else {
-	// 		// CORS not supported.
-	// 		xhr = null;
-	// 	}
-	// 	return xhr;
-	// }
-
-	// // Helper method to parse the title tag from the response.
-	// function getTitle(text) {
-	// 	return text.match('<title>(.*)?</title>')[1];
-	// }
-
-	// // Make the actual CORS request.
-	// function makeCorsRequest(url,data) {
-	// 	// This is a sample server that supports CORS.
-
-	// 	var xhr = createCORSRequest('POST', url,data);
-	// 	if (!xhr) {
-	// 		alert('CORS not supported');
-	// 		return;
-	// 	}
-
-	// 	// Response handlers.
-	// 	xhr.onload = function() {
-	// 		var text = xhr.responseText;
-	// 		// var title = getTitle(text);
-	// 		// alert('Response from CORS request to ' + url + ': ' + title);
-	// 		console.log("response",xhr.responseText)
-	// 	};
-
-	// 	xhr.onerror = function() {
-	// 		alert('Woops, there was an error making the request.');
-	// 	};
-
-	// 	xhr.send();
-	// }
-
-	// Example POST method implementation:
 </script>
 
 <div>
@@ -221,11 +105,31 @@
 				<div class="_col-sm-4">
 					<button
 						class="btn btn-dark btn-lg"
-						on:click={() => copyToClipboard()}>
+						on:click={() => copyToClipboard('original-code')}>
 						<i class="far fa-copy" />
 					</button>
 				</div>
 			</div>
+			<!--[Sharabe-Link]-->
+			{#if shareableUrl != ''}
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="d-flex mt-5 align-items-center">
+							<!--[Display-URL]-->
+							<div id="shareable-url">{shareableUrl}</div>
+							<div>
+								<!--[Copy-BTN]-->
+								<button
+									class="btn btn-grey ml-3"
+									on:click={() => copyToClipboard('shareable-url')}>
+									<i class="far fa-copy" />
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
+
 		</div>
 		<!--[Right-Side]-->
 		<div class="col-sm-6">
