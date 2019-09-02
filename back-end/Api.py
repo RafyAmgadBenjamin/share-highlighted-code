@@ -13,27 +13,6 @@ redis_host = "localhost"
 redis_port = 6379
 redis_password = ""
 
-# ####
-# _allow_origin = '*'
-# _allow_methods = 'PUT, GET, POST, DELETE, OPTIONS'
-# _allow_headers = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
-
-
-# @hook('after_request')
-# def enable_cors():
-#     '''Add headers to enable CORS'''
-
-#     response.headers['Access-Control-Allow-Origin'] = _allow_origin
-#     response.headers['Access-Control-Allow-Methods'] = _allow_methods
-#     response.headers['Access-Control-Allow-Headers'] = _allow_headers
-#     response.headers['content-type'] = 'application/json'
-#     response.headers['Access-Control-Allow-Credentials'] = 'true'
-
-
-# @route('/', method='OPTIONS')
-# @route('/<path:path>', method='OPTIONS')
-# #######################
-
 # the decorator
 def enable_cors(fn):
     def _enable_cors(*args, **kwargs):
@@ -52,19 +31,7 @@ def enable_cors(fn):
 
 app = bottle.app()
 
-# the decorator
-# app = bottle.app()
-# def enable_cors(fn):
-#     def _enable_cors(*args, **kwargs):
-#         # set CORS headers
-#         response.headers['Access-Control-Allow-Origin'] = '*'
-#         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-#         response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
-#         if bottle.request.method != 'OPTIONS':
-#             # actual request; reply with the actual response
-#             return fn(*args, **kwargs)
-#     return _enable_cors
-# @post('/api/code/add-highlighted-code')
+
 @app.route('/api/code/add-highlighted-code', method=['OPTIONS', 'GET', 'POST'])
 @enable_cors
 def add_Highlighted_code():
@@ -105,42 +72,22 @@ def get_shared_code(codeId):
     r = redis.StrictRedis(host=redis_host, port=redis_port,
                           password=redis_password, decode_responses=True)
     if r.get(codeId) is not None:
-        #response.status = 303
-        #response.set_header('Location', r.get(tinyUrl))
         print("redis response")
         print(r.get(codeId))
         originalCode = base64ToString(r.get(codeId))
         print("orginal code")
         print(originalCode)
-        return {"code" : originalCode}
+        return {"code": originalCode}
     else:
         response.status = 404
         # raise an 404 error
         abort(404, 'object already exists with that name')
 
-    # Handle the 404 error response
 
-
+# Handle the 404 error response
 @error(404)
 def error404(error):
     return template('views/404.tpl', e=response.status_code)
-
-# # API: used to get the original URL from the tiny URL and redirect to the original URL
-# @route('/<tinyUrl>')
-# def get_original_url(tinyUrl):
-#     r = redis.StrictRedis(host=redis_host, port=redis_port,
-#                           password=redis_password, decode_responses=True)
-#     if r.get(tinyUrl) is not None:
-#         response.status = 303
-#         response.set_header('Location', r.get(tinyUrl))
-#     else:
-#         response.status = 404
-#         abort(404, 'object already exists with that name')  # raise an 404 error
-
-# # Handle the 404 error response
-# @error(404)
-# def error404(error):
-#     return template('views/404.tpl', e=response.status_code)
 
 
 def stringToBase64(s):

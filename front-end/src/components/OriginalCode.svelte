@@ -11,21 +11,15 @@
 	let originalCode = '';
 	let highlightedCode = { value: '' };
 	function highlightCode(originalCode) {
-		console.log('oringinal code', originalCode);
 		highlightedCode = hljs.highlightAuto(originalCode);
-
-		//	makeCorsRequest(postHighightedCodeApiUrl,);
-		console.log('highlighted', { code: highlightedCode.value });
 		axios
 			.post(postHighightedCodeApiUrl, {
 				code: originalCode,
 			})
 			.then(function(response) {
 				shareableUrl = 'http://localhost:5000/#/share/' + response.data;
-				console.log(response);
 			})
 			.catch(function(error) {
-				console.log(error);
 			});
 	}
 
@@ -40,7 +34,6 @@
 	}
 	//Download the code3
 	function downloadCode(data, fileName = 'originalCode') {
-		console.log('original code', originalCode);
 		var element = document.createElement('a');
 		element.setAttribute(
 			'href',

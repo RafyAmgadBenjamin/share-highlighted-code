@@ -13,8 +13,4 @@ routes.set('/', OriginalCode)
 // Catch-all, must be last
 routes.set('*', NotFound)
 
-// routes.set('/single-worker-tasks/:taskId', SingleWorkerTasks)
-// Catch-all, must be last
-// routes.set('*', NotFound)
-
 export default routes

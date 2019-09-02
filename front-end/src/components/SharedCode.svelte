@@ -13,10 +13,8 @@
 			.get('http://localhost:8080/api/code/get-shared-code/' + codeId)
 			.then(function(response) {
 				// handle success
-				console.log('respose from axios', response);
-				//call hiighlitedCode
-				console.log('the type', typeof response.data);
-                console.log('the requiredData');
+                //call highlitedCode
+                
                 //Get the orginal code from the response to be highlighted
 				let actualCode = response.data.code;
 				highlightCode(actualCode);
@@ -31,7 +29,6 @@
 	}
 
 	function highlightCode(originalCode) {
-		console.log('oringinal code', originalCode);
 		highlightedCode = hljs.highlightAuto(originalCode);
 	}
 </script>
