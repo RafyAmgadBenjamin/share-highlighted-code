@@ -1,7 +1,7 @@
 
 This is a tool is used to <b> auto highlight</b> your code and allow you to <b>share</b> with friends using an auto generated URL
 
-#Features
+# Features
 * Auto Highlight code
 * Share code
 * Download code
@@ -38,6 +38,35 @@ npm run dev
 
 Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
 ## project structure 
+```
+.
+├── back-end
+│   ├── Api.py
+│   └── views
+│       └── 404.tpl
+├── front-end
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   ├── favicon.png
+│   │   ├── global.css
+│   │   └── index.html
+│   ├── rollup.config.js
+│   └── src
+│       ├── App.svelte
+│       ├── components
+│       │   ├── HighlightedCode.svelte
+│       │   ├── NotFound.svelte
+│       │   ├── OriginalCode.svelte
+│       │   └── SharedCode.svelte
+│       ├── main.js
+│       ├── Navigation.svelte
+│       └── routes.js
+├── README.md
+└── tree
+
+6 directories, 18 files
+```
 
 ## Routing between components
 - Install the dependencies for external router **svelte-spa-router**...
