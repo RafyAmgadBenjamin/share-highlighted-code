@@ -24,7 +24,7 @@
 		// xmlhttp.send(
 		// 	JSON.stringify({ email: 'hello@user.com', response: { name: 'Tester' } })
 		// );
-		makeCorsRequest(postHighightedCodeApiUrl,highlightedCode.value);
+		makeCorsRequest(postHighightedCodeApiUrl, highlightedCode.value);
 	}
 
 	//Copy the code
@@ -72,7 +72,7 @@
 	}
 
 	// Make the actual CORS request.
-	function makeCorsRequest(url,data) {
+	function makeCorsRequest(url, data) {
 		// This is a sample server that supports CORS.
 		// var url = 'http://localhost:8080/api/code/add-highlighted-code';
 
@@ -86,14 +86,16 @@
 		xhr.onload = function() {
 			var text = xhr.responseText;
 			// var title = getTitle(text);
-			alert('Response from CORS request to ' + url + ': ');
+			console.log(text);
+			//alert('Response from CORS request to ' + url + ': ');
 		};
 
 		xhr.onerror = function() {
 			alert('Woops, there was an error making the request.');
 		};
 
-		xhr.send(JSON.stringify({code:data}));
+		//xhr.send(JSON.stringify({ code: data }));
+		xhr.send( data );
 	}
 	// function postData(url = '', data = {}) {
 	// 	// Default options are marked with *

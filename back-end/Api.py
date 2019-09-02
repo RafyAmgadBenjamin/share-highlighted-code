@@ -75,15 +75,18 @@ def add_Highlighted_code():
         response.headers['Content-type'] = 'application/json'
     # import ipdb; ipdb.set_trace()
     print(request.body.readlines())
-    # print(request.body.readlines())
+    print("Bytes")
+    print(request.body)
+    print(type(request.body.readlines()))
     generatedVal = str(generate_random_no())
-    return generatedVal
     # add to redis data base
+    # add_highlighted_code(radndomNo=generatedVal,
+                         highlightedCode = request.body.readlines())
+    return generatedVal
     # print(generatedVal)
     # return generatedVal
-    # add_url_redis(tinyUrl=generatedVal, originalUrl=originalUrl)
-    #response.headers['Content-Type'] = 'application/json'
-    #response.headers['Cache-Control'] = 'no-cache'
+    # response.headers['Content-Type'] = 'application/json'
+    # response.headers['Cache-Control'] = 'no-cache'
     # return json.dumps({'tinyUrl': generatedVal})
 
 # # API: used to get the original URL from the tiny URL and redirect to the original URL
@@ -106,7 +109,7 @@ def add_Highlighted_code():
 
 def generate_random_no():
 
-    random.seed(a=None)
+    random.seed(a = None)
     return randint(0, 1000000)  # randint is inclusive at both ends
 
 
@@ -115,16 +118,16 @@ def add_highlighted_code(radndomNo, highlightedCode):
 
         # The decode_repsonses flag here directs the client to convert the responses from Redis into Python strings
         # using the default encoding utf-8.  This is client specific.
-        r = redis.StrictRedis(host=redis_host, port=redis_port,
-                              password=redis_password, decode_responses=True)
+        r=redis.StrictRedis(host = redis_host, port = redis_port,
+                              password = redis_password, decode_responses = True)
 
         # step 4: Set the data in Redis
         r.set(radndomNo, highlightedCode)
-        print(r.get(radndomNo))
+        print("form redis" + r.get(radndomNo))
 
         # step 5: Retrieve the data message from Redis
     except Exception as e:
         print(e)
 
 
-run(host='localhost', port=8080, debug=True)
+run(host = 'localhost', port = 8080, debug = True)
