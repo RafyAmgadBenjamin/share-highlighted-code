@@ -8,7 +8,7 @@ let routes
 routes = new Map()
 routes.set('/highlight', OriginalCode)
 routes.set('/share/:codeId', SharedCode)
-// routes.set('/', OriginalCode)
+routes.set('/', OriginalCode)
 
 // Catch-all, must be last
 routes.set('*', NotFound)
