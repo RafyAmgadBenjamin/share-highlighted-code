@@ -112,7 +112,7 @@ def get_shared_code(codeId):
         originalCode = base64ToString(r.get(codeId))
         print("orginal code")
         print(originalCode)
-        return originalCode
+        return {"code" : originalCode}
     else:
         response.status = 404
         # raise an 404 error

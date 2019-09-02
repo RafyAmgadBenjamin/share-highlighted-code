@@ -13,9 +13,13 @@
 			.get('http://localhost:8080/api/code/get-shared-code/' + codeId)
 			.then(function(response) {
 				// handle success
-				console.log("respose from axios",response);
+				console.log('respose from axios', response);
 				//call hiighlitedCode
-				highlightCode(response.data);
+				console.log('the type', typeof response.data);
+                console.log('the requiredData');
+                //Get the orginal code from the response to be highlighted
+				let actualCode = response.data.code;
+				highlightCode(actualCode);
 			})
 			.catch(function(error) {
 				// handle error
