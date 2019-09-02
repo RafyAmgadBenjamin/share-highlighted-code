@@ -90,13 +90,40 @@ def add_Highlighted_code():
     add_highlighted_code(radndomNo=generatedVal,
                          data=encodedData)
     return generatedVal
-    
+
     # return generatedVal
     # print(generatedVal)
     # return generatedVal
     #response.headers['Content-Type'] = 'application/json'
     #response.headers['Cache-Control'] = 'no-cache'
     # return json.dumps({'tinyUrl': generatedVal})
+
+
+@app.route('/api/code/get-shared-code/<codeId>', method=['OPTIONS', 'GET', 'POST'])
+@enable_cors
+def get_shared_code(codeId):
+    r = redis.StrictRedis(host=redis_host, port=redis_port,
+                          password=redis_password, decode_responses=True)
+    if r.get(codeId) is not None:
+        #response.status = 303
+        #response.set_header('Location', r.get(tinyUrl))
+        print("redis response")
+        print(r.get(codeId))
+        originalCode = base64ToString(r.get(codeId))
+        print("orginal code")
+        print(originalCode)
+        return originalCode
+    else:
+        response.status = 404
+        # raise an 404 error
+        abort(404, 'object already exists with that name')
+
+    # Handle the 404 error response
+
+
+@error(404)
+def error404(error):
+    return template('views/404.tpl', e=response.status_code)
 
 # # API: used to get the original URL from the tiny URL and redirect to the original URL
 # @route('/<tinyUrl>')

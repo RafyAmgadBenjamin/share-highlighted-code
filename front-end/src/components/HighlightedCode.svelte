@@ -2,7 +2,6 @@
 	export let highlightedCode;
 </script>
 
-<div class="col-sm-6">
 	<!--[Highlighted-Code]-->
 	{#if highlightedCode.value}
 		<pre>
@@ -11,4 +10,3 @@
 			</code>
 		</pre>
 	{/if}
-</div>

@@ -1,7 +1,7 @@
 <script>
 	import hljs from 'highlight.js';
-    import axios from 'axios';
-    import HighlightedCode from './HighlightedCode.svelte'
+	import axios from 'axios';
+	import HighlightedCode from './HighlightedCode.svelte';
 	var postHighightedCodeApiUrl =
 		'http://localhost:8080/api/code/add-highlighted-code';
 
@@ -21,7 +21,7 @@
 				code: originalCode,
 			})
 			.then(function(response) {
-				shareableUrl = 'http://localhost:5000/share-code/' + response.data;
+				shareableUrl = 'http://localhost:5000/#/share/' + response.data;
 				console.log(response);
 			})
 			.catch(function(error) {
@@ -118,5 +118,7 @@
 
 	</div>
 	<!--[Right-Side]-->
-	<HighlightedCode {highlightedCode}/>
+	<div class="col-sm-6">
+		<HighlightedCode {highlightedCode} />
+	</div>
 </div>

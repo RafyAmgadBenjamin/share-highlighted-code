@@ -2,6 +2,7 @@
 	import Navigation from './Navigation.svelte';
 	import Router from 'svelte-spa-router';
 	import routes from './routes';
+	console.log(routes)
 </script>
 
 <div>
