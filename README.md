@@ -197,7 +197,10 @@ For more information about the router check <https://www.npmjs.com/package/svelt
 ``` 
 
 * Create ```front-end/src/components/NotFound.svelte``` component to handle the not found pages
-
+```
+<h2>Not Found</h2>
+<h3>Oops, this route doesn't exist!</h3>
+```
 
 * Create  ```front-end/src/components/SharedCode.svelte``` component which contain all the required logic to all the user to get the shared code from the API in bottle server
 ```javascript
@@ -235,7 +238,7 @@ function getSharedCode(codeId) {
 		</pre>
 	{/if}
 ```
-* In code highlighting, I have used <b>highlighjs library</b>, to install ```npm install highlight.js```, Import this library ```	import hljs from 'highlight.js';```, call ```hljs.initHighlightingOnLoad();``` to attache highlighting to the page load event and call ```highlightAuto(value, languageSubset)``` to get the markup that will highligh the code
+* In code highlighting, I have used <b>highlighjs library</b>, to install ```npm install highlight.js```, import this library ```	import hljs from 'highlight.js';```, call ```hljs.initHighlightingOnLoad();``` to attache highlighting to the page load event and call ```highlightAuto(value, languageSubset)``` to get the markup that will highligh the code
 ```
 highlightedCode = hljs.highlightAuto(originalCode);
 ```
@@ -248,8 +251,8 @@ to render it it must be in ```<pre>``` and ```<code>``` tags
 </pre>
 ```
 
-* In requests handling to deal with APIs,I have used <b>axios library</b>
-, to install ```npm install axios```, Import it ```	import axios from 'axios';``` and then you will be able to do requests to the APIs
+* In requests handling to deal with APIs, I have used <b>axios library</b>
+, to install ```npm install axios```, import it ```	import axios from 'axios';``` and then you will be able to do requests to the APIs.</br>
 To do <b>POST Request</b>
 ```javascript
 axios
@@ -287,7 +290,7 @@ axios
 
 * Install bottle Web FrameWork ```pip install bottle```
 
-* Import the server in the python file ```from bottle import route``` then create your APIs to handle the comming requests 
+* Import what you need from the server in the python file <b>example</b> ```from bottle import route``` then create your APIs to handle the comming requests 
 ```python
 @app.route('/api/code/add-highlighted-code', method=['OPTIONS', 'GET', 'POST'])
 @enable_cors
