@@ -88,7 +88,7 @@ routes.set('*', NotFound)
 For more information about the router check <https://www.npmjs.com/package/svelte-spa-router>
 
 ## Working on front-end
-* Add all the front-end libraries <b> example</b> ```Bootsrap and Font awesome``` in ```/public/index.html```
+* Add all the front-end libraries <b> example</b> ```Bootstrap and Font awesome``` in ```/public/index.html```
 
 * Create navigation component <b>example</b> ```front-end/src/Navigation.svelte``` and import this component in ```front-end/src/App.svelte``` <b>example</b> ```import Navigation from './Navigation.svelte';```to use this component ```<Navigation />```
 
