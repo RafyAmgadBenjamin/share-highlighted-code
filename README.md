@@ -1,5 +1,5 @@
 
-This is a tool is used to <b> auto highlight</b> your code and allow you to <b>share</b> with friends using an auto generated URL
+This is a tool which is used to <b> auto highlight</b> your code and allow you to <b>share</b> with friends using an auto generated URL
 
 # Features
 * Auto Highlight code
